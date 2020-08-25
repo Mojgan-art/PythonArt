@@ -1,0 +1,67 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import keras
+from keras.datasets import cifar10
+from keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras import layers
+from keras.layers import Dense,Dropout,Flatten
+from tensorflow.python.keras.layers.pooling import MaxPooling2D
+from keras.layers import Conv2D
+
+batch_size=256
+num_classes=10
+epochs =20 #20times train
+data_augmentation=True 
+
+#Load DataSet
+(X_train,y_train),(X_test,y_test)= cifar10.load_data()
+print('Training Set Shape :{}'.format(X_train.shape))
+print(' Number of training samples :{}'.format(X_train.shape[0]))    
+print(' Number of test samples :    {}'.format(X_test.shape[0])) 
+
+#data Visiualization 
+samples_per_class =5
+plt.figure(figsize=(16,8))
+for cls,name in enumerate(cifar_names):
+    idxs=np.flatnonzero(y_train==cls)
+    idxs=np.random.choice(idxs,samples_per_class,replace=False)
+    for i,idx in enumerate(idxs):
+        plt.subplot(samples_per_class,num_classes,i*num_classes+cls+1)
+        plt.imshow(X_train[idx],interpolation='Spline16')
+
+        plt.axis('off')
+        if i==0:
+            plt.title(cifar_names[cls])
+       
+       #one-hot encodding
+y_train=keras.utils.to_categorical(y_train,num_classes)
+y_test=keras.utils.to_categorical(y_test,num_classes)
+  #perprocessing
+X_tain=X_train.astype('float32')
+X_test=X_test.astype('float32')
+
+mu=np.mean(X_tain,axis=0)
+X_tain-=mu
+X_test-=mu
+
+X_tain/=255.0
+X_test/=255.0
+
+
+#one-hot encodding
+y_train=keras.utils.to_categorical(y_train,num_classes)
+y_test=keras.utils.to_categorical(y_test,num_classes)
+
+from keras.models import Sequential
+
+
+#conventional Neural Networks
+model=Sequential()
+model.add(Conv2D(64,(3,3),padding='same',input_shape=X_train.shape[1:],activation='relu'))
+model.add(Conv2D(64,(3,3),padding='same',activation='relu'))
+model.add(MaxPooling2D(pool_size=(2,2)))
+model.add(Dropout(0.25))
+model.summary()
+
+
+
