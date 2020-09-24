@@ -1,0 +1,24 @@
+# how to complese NaN values 
+#depend on type of field we can group by 
+
+df=pd.DataFrame({'Bird':['A','A','B','B','B'],'speed':[380,434,34,44,np.nan]})
+df.groupby(['Bird']).mean()
+
+
+#fill non value with mean of same type
+df['speed']=df.groupby(['Bird'])['speed'].transform(lambda x: x.fillna(x.mean()))
+df
+######################################BEFORE######################################
+	Bird	speed
+0	A	380.0
+1	A	434.0
+2	B	34.0
+3	B	44.0
+4	B	NaN
+##################################AFTER###########################################
+Bird	speed
+0	A	380.0
+1	A	434.0
+2	B	34.0
+3	B	44.0
+4	B	39.0
