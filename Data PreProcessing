@@ -1,0 +1,19 @@
+import pandas as pd
+#Age and salary in order to normalize 
+data={'age':[18,35,37,43,55,70],
+     'salary':[30000,35000,43000,60000,100000,120000]}
+df=pd.DataFrame(data)
+
+%%capture #removecomments
+scalar=MinMaxScaler()
+
+#calculate Min Max 
+scaler.data_min
+scaler.data_max
+
+#Normalize l1 (each Numner/Total Number) Normalize l2(each number/sum of radical of square )
+
+n1=normalize(df,norm='l1',axis=0)# each number/total number
+n2=normalize(df,norm='l2',axis=0)# each number/sum of Radical of squere of each numbers
+
+scaler.transform(df) #(x-min)/(max-min)
